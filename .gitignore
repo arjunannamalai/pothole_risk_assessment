@@ -9,12 +9,27 @@ env/
 .venv/
 
 # Model checkpoints (large files)
-models/*.pth
-models/*.pt
-models/*.bin
+models/
+*.pth
+*.pt
+*.bin
+*.onnx
+*.safetensors
+
+# Datasets (large files)
+data/rdd2022*/
+data/pothole*/
+data/dataset*/
+data/*.zip
+data/*.tar
+data/*.tar.gz
 
 # Qdrant database
 data/qdrant_db/
+
+# Keep sample images
+!data/sample_images/
+!data/.gitkeep
 
 # Output files
 outputs/
