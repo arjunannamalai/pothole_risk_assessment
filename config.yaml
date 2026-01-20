@@ -1,0 +1,65 @@
+# Configuration for Pothole Risk Assessment System
+
+# Model paths (download these first)
+models:
+  sam:
+    checkpoint: "models/sam_vit_h_4b8939.pth"
+    model_type: "vit_h"  # Options: vit_h, vit_l, vit_b
+    device: "cuda"  # or "cpu"
+  
+  depth:
+    model_name: "depth-anything/Depth-Anything-V2-Large-hf"
+    device: "cuda"
+
+  embedding:
+    model_name: "facebook/dinov2-base"
+    device: "cuda"
+
+# Qdrant configuration
+qdrant:
+  path: "./data/qdrant_db"  # Local persistent storage
+  collection_name: "pothole_risk_assessment"
+  vector_size: 768  # DINOv2-base output size
+
+# Camera calibration defaults
+# Override these with actual calibration data for accurate measurements
+calibration:
+  camera_height_m: 1.5  # Typical dashcam height
+  pixel_to_meter: 0.01  # Approximate at 5m distance
+  lane_width_m: 3.5     # Standard lane width for reference
+
+# Risk scoring weights and thresholds
+risk_assessment:
+  depth_thresholds:
+    critical: 0.15  # >15cm
+    high: 0.10      # >10cm
+    medium: 0.05    # >5cm
+  
+  area_thresholds:
+    very_large: 2.0   # >2m²
+    large: 1.0        # >1m²
+    medium: 0.5       # >0.5m²
+  
+  volume_thresholds:
+    extensive: 0.30   # >300 liters
+    major: 0.15       # >150 liters
+    moderate: 0.05    # >50 liters
+  
+  weights:
+    depth: 40         # Max points for depth
+    area: 30          # Max points for area
+    volume: 20        # Max points for volume
+    irregularity: 10  # Max points for edge sharpness
+
+# Segmentation filtering
+segmentation:
+  min_area_pixels: 1000
+  max_area_pixels: 500000
+  min_stability_score: 0.85
+  min_predicted_iou: 0.80
+
+# Output settings
+output:
+  save_visualizations: true
+  visualization_dir: "./outputs/visualizations"
+  reports_dir: "./outputs/reports"
